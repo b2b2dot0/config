@@ -28,7 +28,7 @@ module Config
       rescue ActiveRecord::NoDatabaseError
         {}
       rescue ActiveRecord::ConnectionNotEstablished => exception
-        config = YAML.load(db_config)[Rails.env]
+        config = YAML.load(ERB.new(db_config).result)[Rails.env]
         ActiveRecord::Base.establish_connection(config)
         @retry_count += 1 and retry if @retry_count < 1
 
